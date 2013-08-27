@@ -33,6 +33,8 @@ class Url
      */
     private $authInfo;
 
+
+
     public function __construct($url = null)
     {
         if ($url) {
@@ -117,7 +119,11 @@ class Url
         return $this->__toString() == "$url";
     }
 
-
+    public function setEncoder($encoder)
+    {
+        $this->query->setEncoder($encoder);
+        $this->path->setEncoder($encoder);
+    }
 
     public function __toString()
     {

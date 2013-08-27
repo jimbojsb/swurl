@@ -3,10 +3,11 @@ namespace Swurl;
 
 class Path implements \IteratorAggregate, \Countable
 {
-    private $encoder;
     private $hasLeadingSlash = false;
     private $hasTrailingSlash = false;
     private $parts = [];
+
+    use Encodeable;
 
     public function __construct($path = null)
     {
@@ -28,12 +29,6 @@ class Path implements \IteratorAggregate, \Countable
         }
 
         $this->setEncoder('urlencode');
-    }
-
-    public function setEncoder($encoderFunction)
-    {
-        $this->encoder = $encoderFunction;
-        return $this;
     }
 
     public function setHasLeadingSlash($hasLeadingSlash)
@@ -72,7 +67,7 @@ class Path implements \IteratorAggregate, \Countable
     {
         $parts = $this->parts;
         foreach ($parts as &$part) {
-            $part = call_user_func_array($this->encoder, [$part]);
+            $part = $this->encode($part);
         }
         $output = "";
         if ($this->hasLeadingSlash) {

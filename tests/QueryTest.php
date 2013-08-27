@@ -35,6 +35,20 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $query2["foo"] = "bar1";
 
         $this->assertEquals("?foo=bar1&bar=baz", $query1->merge($query2)->__toString());
+    }
+
+    public function testEncoding()
+    {
+        $q = new Query;
+        $q->set('foo', 'bar baz');
+        $this->assertEquals('?foo=bar+baz', $q->__toString());
+
+        $q->setEncoder('rawurlencode');
+        $this->assertEquals('?foo=bar%20baz', $q->__toString());
+
+        $complicated = '';
+        $q = new Query($complicated);
+        $this->assertEquals($complicated, $q->__toString());
 
     }
 }

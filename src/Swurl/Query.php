@@ -5,6 +5,8 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     private $params = [];
 
+    use Encodeable;
+
     public function __construct($params = null)
     {
         if ($params !== null) {
@@ -57,7 +59,18 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
     public function __toString()
     {
         if ($this->params) {
-            return '?' . http_build_query($this->params);
+            $output = "?";
+            $encodedParams = [];
+            foreach ($this->params as $key => $value) {
+                $encodedParams[$this->encode($key)] = $this->encode($value);
+            }
+
+            $pairs = [];
+            foreach ($encodedParams as $key => $value) {
+                $pairs[] = "$key=$value";
+            }
+            $output .= implode('&', $pairs);
+            return $output;
         }
         return '';
     }
