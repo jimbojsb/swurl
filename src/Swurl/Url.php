@@ -80,18 +80,12 @@ class Url
         $this->query = $query;
     }
 
-    /**
-     * @param $host mixed
-     */
     public function setHost($host)
     {
-        if ($host instanceof Host) {
-            $this->host = $host;
-        } else if (is_string($host)) {
-
-        } else if (is_array($host)) {
-
+        if (!($host instanceof Host)) {
+            $host = new Host($host);
         }
+        $this->host = $host;
     }
 
     public function setAuthInfo($authInfo)
