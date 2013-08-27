@@ -39,4 +39,14 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->getQuery()->set('foo', 'bar');
         $this->assertEquals('www.example.com/foo/bar?foo=bar', $u->__toString());
     }
+
+    public function testCurrent()
+    {
+        $_SERVER['REQUEST_URI'] = "/foo/bar/baz?foo=bar&baz=foo";
+        $_SERVER['HTTP_HOST'] = 'example.com';
+
+        $url = Url::current();
+        $this->assertEquals('http://example.com/foo/bar/baz?foo=bar&baz=foo', $url->__toString());
+
+    }
 }

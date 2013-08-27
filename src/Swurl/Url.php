@@ -222,6 +222,13 @@ class Url
     public static function current()
     {
         $url = new self($_SERVER['REQUEST_URI']);
+        $url->setHost($_SERVER['HTTP_HOST']);
+        if ($_SERVER['HTTPS']) {
+            $url->setScheme('https');
+        } else {
+            $url->setScheme('http');
+        }
+        return $url;
     }
 
 }
