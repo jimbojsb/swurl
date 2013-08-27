@@ -216,6 +216,13 @@ class Url
         return $this->scheme;
     }
 
+    public function setPathAndQuery($pathAndQuery)
+    {
+        $parts = parse_url($pathAndQuery);
+        $this->setPath($parts["path"]);
+        $this->setQuery($parts["query"]);
+    }
+
     /**
      * @return Url
      */

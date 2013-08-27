@@ -47,6 +47,12 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $url = Url::current();
         $this->assertEquals('http://example.com/foo/bar/baz?foo=bar&baz=foo', $url->__toString());
+    }
 
+    public function testSetPathAndQuery()
+    {
+        $u = new Url;
+        $u->setPathAndQuery('/foo/bar?bar=baz');
+        $this->assertEquals('/foo/bar?bar=baz', $u->__toString());
     }
 }
