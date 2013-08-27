@@ -1,8 +1,10 @@
 <?php
 namespace Swurl;
 
-class Query extends \ArrayObject
+class Query implements \IteratorAggregate, \Countable, \ArrayAccess
 {
+    private $params = [];
+
     public function __construct($params = null)
     {
         if ($params !== null) {
@@ -17,21 +19,68 @@ class Query extends \ArrayObject
                 throw new \InvalidArgumentException('$params must be an array or a query string');
             }
         }
-        parent::__construct($params ?: []);
+        foreach ($params as $key => $value) {
+            $this->set($key, $value);
+        }
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->params);
+    }
+
+    public function count()
+    {
+        return count($this->params);
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->params[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->params[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
     }
 
     public function __toString()
     {
-        return '?' . http_build_query($this);
+        if ($this->params) {
+            return '?' . http_build_query($this->params);
+        }
+        return '';
+    }
+
+    public function set($key, $value)
+    {
+        $this->params[$key] = $value;
+        return $this;
+    }
+
+    public function remove($key)
+    {
+        unset($this->params[$key]);
+        return $this;
     }
 
     public function merge($params)
     {
         if ($params instanceof self) {
-            $params = $params->getArrayCopy();
+            $params = $params->getIterator()->getArrayCopy();
         }
-        $newParams = array_merge($this->getArrayCopy(), $params);
-        $this->exchangeArray($newParams);
+        $newParams = array_merge($this->params, $params);
+        $this->params = $newParams;
         return $this;
     }
 }

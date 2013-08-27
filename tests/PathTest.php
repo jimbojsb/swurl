@@ -7,6 +7,9 @@ class PathTest extends PHPUnit_Framework_TestCase
     {
         $p = new Path('/foo/bar/baz');
         $this->assertEquals('/foo/bar/baz', $p->__toString());
+
+        $p = new Path;
+        $this->assertEquals('', $p->__toString());
     }
 
     public function testEncoder()
@@ -20,8 +23,12 @@ class PathTest extends PHPUnit_Framework_TestCase
     public function testAddPath()
     {
         $p = new Path('/foo/bar');
-        $p[] = 'baz';
+        $p->appendPath('baz');
         $this->assertEquals('/foo/bar/baz', $p->__toString());
+
+        $p = new Path('/foo/bar');
+        $p->prependPath('baz');
+        $this->assertEquals('/baz/foo/bar', $p->__toString());
     }
 
     public function testLeadingTrailingSlash()

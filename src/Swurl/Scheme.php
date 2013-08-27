@@ -5,7 +5,12 @@ class Scheme
 {
     private $scheme;
 
-    public function __construct($scheme)
+    public function __construct($scheme = null)
+    {
+        $this->scheme = $scheme;
+    }
+
+    public function setScheme($scheme)
     {
         $this->scheme = $scheme;
     }

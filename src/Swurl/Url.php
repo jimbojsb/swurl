@@ -155,6 +155,9 @@ class Url
      */
     public function getAuthInfo()
     {
+        if (!$this->authInfo) {
+            $this->authInfo = new AuthInfo;
+        }
         return $this->authInfo;
     }
 
@@ -163,6 +166,9 @@ class Url
      */
     public function getFragment()
     {
+        if (!$this->fragment) {
+            $this->fragment = new Fragment;
+        }
         return $this->fragment;
     }
 
@@ -171,6 +177,9 @@ class Url
      */
     public function getHost()
     {
+        if (!$this->host) {
+            $this->host = new Host;
+        }
         return $this->host;
     }
 
@@ -179,6 +188,9 @@ class Url
      */
     public function getPath()
     {
+        if (!$this->path) {
+            $this->path = new Path;
+        }
         return $this->path;
     }
 
@@ -187,6 +199,9 @@ class Url
      */
     public function getQuery()
     {
+        if (!$this->query) {
+            $this->query = new Query;
+        }
         return $this->query;
     }
 
@@ -195,6 +210,9 @@ class Url
      */
     public function getScheme()
     {
+        if (!$this->scheme) {
+            $this->scheme = new Scheme;
+        }
         return $this->scheme;
     }
 

@@ -9,5 +9,7 @@ class FragmentTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("#foo", $f->__toString());
         $f = new Fragment("#foo");
         $this->assertEquals("#foo", $f->__toString());
+        $f = new Fragment;
+        $this->assertEquals('', $f->__toString());
     }
 }

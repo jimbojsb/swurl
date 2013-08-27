@@ -20,6 +20,9 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $query = new Query;
         $query["foo"] = "bar";
         $this->assertEquals("?foo=bar", $query->__toString());
+
+        $q = new Query;
+        $this->assertEquals('', $q->__toString());
     }
 
     public function testMerge()

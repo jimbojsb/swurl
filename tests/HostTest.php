@@ -7,6 +7,8 @@ class HostTest extends PHPUnit_Framework_TestCase
     {
         $h = new Host('www.example.com');
         $this->assertEquals('www.example.com', $h->__toString());
+        $h = new Host;
+        $this->assertEquals('', $h->__toString());
     }
 
     public function testGetTld()
