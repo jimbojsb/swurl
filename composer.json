@@ -1,0 +1,19 @@
+{
+    "name": "jimbojsb/swurl",
+    "description": "URL Parser / Manipulator",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josh Butts",
+            "email": "josh@joshbutts.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Swurl": "src/"
+        }
+    }
+}
