@@ -21,6 +21,7 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                 throw new \InvalidArgumentException('$params must be an array or a query string');
             }
         }
+
         foreach ($params as $key => $value) {
             $this->set($key, $value);
         }
@@ -62,12 +63,24 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
             $output = "?";
             $encodedParams = [];
             foreach ($this->params as $key => $value) {
-                $encodedParams[$this->encode($key)] = $this->encode($value);
+                if (is_array($value)) {
+                    foreach ($value as $subValue) {
+                        $encodedParams[$this->encode($key)][] = $this->encode($subValue);
+                    }
+                } else {
+                    $encodedParams[$this->encode($key)] = $this->encode($value);
+                }
             }
 
             $pairs = [];
             foreach ($encodedParams as $key => $value) {
-                $pairs[] = "$key=$value";
+                if (is_array($value)) {
+                    foreach ($value as $subValue) {
+                        $pairs[] = "$key" . "[]" . "=$subValue";
+                    }
+                } else {
+                    $pairs[] = "$key=$value";
+                }
             }
             $output .= implode('&', $pairs);
             return $output;

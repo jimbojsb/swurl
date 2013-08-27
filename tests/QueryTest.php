@@ -46,7 +46,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $q->setEncoder('rawurlencode');
         $this->assertEquals('?foo=bar%20baz', $q->__toString());
 
-        $complicated = '';
+        $complicated = '?focus=14&compare[]=77_14&compare[]=76_14&compare[]=12411_14&compare[]=4899_14';
         $q = new Query($complicated);
         $this->assertEquals($complicated, $q->__toString());
 
