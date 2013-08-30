@@ -20,10 +20,10 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
             if (!is_array($params)) {
                 throw new \InvalidArgumentException('$params must be an array or a query string');
             }
-        }
 
-        foreach ($params as $key => $value) {
-            $this->set($key, $value);
+            foreach ($params as $key => $value) {
+                $this->set($key, $value);
+            }
         }
     }
 
