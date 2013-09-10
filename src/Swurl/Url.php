@@ -156,6 +156,33 @@ class Url
         return $output;
     }
 
+    public function __clone()
+    {
+        if ($this->scheme) {
+            $this->scheme = clone $this->scheme;
+        }
+
+        if ($this->authInfo) {
+            $this->authInfo = clone $this->authInfo;
+        }
+
+        if ($this->host) {
+            $this->host = clone $this->host;
+        }
+
+        if ($this->path) {
+            $this->path = clone $this->path;
+        }
+
+        if ($this->query) {
+            $this->query = clone $this->query;
+        }
+
+        if ($this->fragment) {
+            $this->fragment = clone $this->fragment;
+        }
+    }
+
     /**
      * @return \Swurl\AuthInfo
      */

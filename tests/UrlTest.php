@@ -21,6 +21,12 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u3 = "http://example.com";
 
         $this->assertTrue($u->equals($u3));
+
+        // test deep cloning
+        $u4 = new Url("http://www.example.com/foo");
+        $u5 = clone $u4;
+        $u5->getPath()->setHasTrailingSlash(true);
+        $this->assertFalse($u4->equals($u5));
     }
 
     public function testPartialUrls()
