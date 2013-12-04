@@ -142,6 +142,11 @@ class Url
         }
 
         if ($this->path) {
+            if ($this->host) {
+                if (!$this->path->hasLeadingSlash()) {
+                    $output .= "/";
+                }
+            }
             $output .= $this->path;
         }
 

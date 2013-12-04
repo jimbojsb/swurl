@@ -61,4 +61,11 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $u->setPathAndQuery('/foo/bar?bar=baz');
         $this->assertEquals('/foo/bar?bar=baz', $u->__toString());
     }
+
+    public function testRelativePathWithHost()
+    {
+        $url = new \Swurl\Url('test');
+        $url->setHost('google.com');
+        $this->assertEquals("google.com/test", $url->__toString());
+    }
 }

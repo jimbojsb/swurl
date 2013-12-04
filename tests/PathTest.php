@@ -40,5 +40,17 @@ class PathTest extends PHPUnit_Framework_TestCase
 
         $p->setHasTrailingSlash(true);
         $this->assertEquals('foo/bar/', $p->__toString());
+
+        $p = new Path('foo');
+        $this->assertFalse($p->hasLeadingSlash());
+        $this->assertFalse($p->hasTrailingSlash());
+
+        $p = new Path('foo/');
+        $this->assertFalse($p->hasLeadingSlash());
+        $this->assertTrue($p->hasTrailingSlash());
+
+        $p = new Path('/foo');
+        $this->assertTrue($p->hasLeadingSlash());
+        $this->assertFalse($p->hasTrailingSlash());
     }
 }

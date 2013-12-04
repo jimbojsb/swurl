@@ -63,6 +63,16 @@ class Path implements \IteratorAggregate, \Countable
         array_unshift($this->parts, $path);
     }
 
+    public function hasLeadingSlash()
+    {
+        return $this->hasLeadingSlash;
+    }
+
+    public function hasTrailingSlash()
+    {
+        return $this->hasTrailingSlash;
+    }
+
     public function __toString()
     {
         $parts = $this->parts;
