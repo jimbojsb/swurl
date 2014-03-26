@@ -12,9 +12,11 @@ trait Encodeable
 
     private function isEncoded($string)
     {
-        $decoderFunction = str_replace('encode', 'decode', $this->encoder);
-        if (call_user_func_array($decoderFunction, [$string]) != $string) {
-            return true;
+        if ($this->encoder) {
+            $decoderFunction = str_replace('encode', 'decode', $this->encoder);
+            if (call_user_func_array($decoderFunction, [$string]) != $string) {
+                return true;
+            }
         }
         return false;
     }
