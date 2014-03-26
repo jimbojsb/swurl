@@ -24,6 +24,9 @@ trait Encodeable
         if ($this->isEncoded($string)) {
             return $string;
         }
-        return call_user_func_array($this->encoder, [$string]);
+        if ($this->encoder) {
+            return call_user_func_array($this->encoder, [$string]);
+        }
+        return $string;
     }
 }

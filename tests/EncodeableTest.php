@@ -15,5 +15,9 @@ class EncodeableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo%20bar', $this->encode($encodedString2));
         $this->setEncoder('urlencode');
         $this->assertEquals('foo+bar', $this->encode($encodedString1));
+
+        $rawString = '{{ }}';
+        $this->setEncoder(false);
+        $this->assertEquals($rawString, $this->encode($rawString));
     }
 }
