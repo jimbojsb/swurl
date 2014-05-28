@@ -33,6 +33,10 @@ class Url
      */
     private $authInfo;
 
+    /**
+     * @param boolean $isSchemeless
+     */
+    private $isSchemeless = false;
 
 
     public function __construct($url = null)
@@ -64,6 +68,11 @@ class Url
                 $this->setFragment(new Fragment($parts["fragment"]));
             }
         }
+    }
+
+    public function makeSchemeless()
+    {
+        $this->isSchemeless = true;
     }
 
     public function setPath($path)
@@ -112,6 +121,7 @@ class Url
             $scheme = new Scheme($scheme);
         }
         $this->scheme = $scheme;
+        $this->isSchemeless = false;
     }
 
     public function equals($url)
@@ -128,10 +138,16 @@ class Url
     public function __toString()
     {
         $output = "";
-        if ($this->scheme) {
-            $output .= $this->scheme;
-            $output .= "://";
+
+        if ($this->host) {
+            if ($this->isSchemeless) {
+                $output .= '//';
+            } else if ($this->scheme) {
+                $output .= $this->scheme;
+                $output .= "://";
+            }
         }
+
 
         if ($this->authInfo) {
             $output .= $this->authInfo;

@@ -68,4 +68,25 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $url->setHost('google.com');
         $this->assertEquals("google.com/test", $url->__toString());
     }
+
+    public function testSchemeWithNoHost()
+    {
+        $url = new \Swurl\Url('/foo/bar.jpg');
+        $url->setScheme('http');
+        $this->assertEquals('/foo/bar.jpg', $url->__toString());
+    }
+
+    public function testSchemelessUrls()
+    {
+        $url = new \Swurl\Url('/foo/bar.jpg');
+        $url->makeSchemeless();
+
+        $this->assertEquals('/foo/bar.jpg', $url->__toString());
+
+        $url->setHost('example.com');
+        $this->assertEquals('//example.com/foo/bar.jpg', $url->__toString());
+
+        $url->setScheme('http');
+        $this->assertEquals('http://example.com/foo/bar.jpg', $url->__toString());
+    }
 }
