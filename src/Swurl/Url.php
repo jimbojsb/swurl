@@ -42,10 +42,13 @@ class Url
     public function __construct($url = null)
     {
         if ($url) {
+
             $parts = parse_url($url);
 
             if ($parts["scheme"]) {
                 $this->setScheme(new Scheme($parts["scheme"]));
+            } else if (substr($url, 0, 2) === '//') {
+                $this->makeSchemeless();
             }
 
             if ($parts["user"] || $parts["pass"]) {
@@ -73,6 +76,11 @@ class Url
     public function makeSchemeless()
     {
         $this->isSchemeless = true;
+    }
+
+    public function isSchemeless()
+    {
+        return $this->isSchemeless;
     }
 
     public function setPath($path)

@@ -88,5 +88,12 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $url->setScheme('http');
         $this->assertEquals('http://example.com/foo/bar.jpg', $url->__toString());
+
+        $url = new Url("//foo.com/bar/bar.jpg");
+        $this->assertTrue($url->isSchemeless());
+        $this->assertEquals('//foo.com/bar/bar.jpg', $url->__toString());
+
+        $url->setScheme('http');
+        $this->assertEquals('http://foo.com/bar/bar.jpg', $url->__toString());
     }
 }
