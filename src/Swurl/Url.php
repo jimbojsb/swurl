@@ -278,11 +278,18 @@ class Url
         return $this->scheme;
     }
 
-    public function setPathAndQuery($pathAndQuery)
+    public function setUri($uri)
     {
-        $parts = parse_url($pathAndQuery);
-        $this->setPath($parts["path"]);
-        $this->setQuery($parts["query"]);
+        $parts = parse_url($uri);
+        if ($parts["path"]) {
+            $this->setPath($parts["path"]);
+        }
+        if ($parts["query"]) {
+            $this->setQuery($parts["query"]);
+        }
+        if ($parts["fragment"]) {
+            $this->setFragment($parts["fragment"]);
+        }
     }
 
     /**
