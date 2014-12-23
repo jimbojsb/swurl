@@ -10,13 +10,13 @@ class Host
     public function __construct($hostname = null)
     {
         if ($hostname) {
-            if (filter_var($hostname, FILTER_VALIDATE_IP)) {
-                $this->isIpAddress = true;
-            }
-
             if (strpos($hostname, ":") !== false) {
                 list($hostname, $port) = explode(":", $hostname);
                 $this->port = $port;
+            }
+
+            if (filter_var($hostname, FILTER_VALIDATE_IP)) {
+                $this->isIpAddress = true;
             }
 
             $hostnameParts = explode('.', $hostname);
