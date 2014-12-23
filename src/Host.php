@@ -48,6 +48,15 @@ class Host
         }
     }
 
+    public function isLocalHost()
+    {
+        $host = implode(".", $this->parts);
+        if ($host == '127.0.0.1' || $host == 'localhost') {
+            return true;
+        }
+        return false;
+    }
+
     public function getTld()
     {
         if ($this->isIpAddress) {

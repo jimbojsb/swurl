@@ -83,6 +83,26 @@ class HostTest extends PHPUnit_Framework_TestCase
             $this->fail("Expected InvalidArgumentException trying to set non-numeric port");
         } catch (\InvalidArgumentException $e) {
         }
+    }
 
+    public function testIsLocalHost()
+    {
+        $h = new Host("127.0.0.1");
+        $this->assertTrue($h->isLocalHost());
+
+        $h = new Host("localhost");
+        $this->assertTrue($h->isLocalHost());
+
+        $h = new Host("10.0.0.1");
+        $this->assertFalse($h->isLocalHost());
+
+        $h = new Host("127.0.0.1:8080");
+        $this->assertTrue($h->isLocalHost());
+
+        $h = new Host("localhost:8080");
+        $this->assertTrue($h->isLocalHost());
+
+        $h = new Host("example.com");
+        $this->assertFalse($h->isLocalHost());
     }
 }
