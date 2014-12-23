@@ -58,7 +58,10 @@ class HostTest extends PHPUnit_Framework_TestCase
         $h = new Host("www.example.com");
         $this->assertFalse($h->isIpAddress());
 
-        $h = new Host("192.168.1.1");
+        $h = new Host("127.0.0.1");
+        $this->assertTrue($h->isIpAddress());
+
+        $h = new Host("127.0.0.1:10007");
         $this->assertTrue($h->isIpAddress());
     }
 
