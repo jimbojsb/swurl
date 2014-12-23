@@ -12,8 +12,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Swurl": "src/"
+        "psr-4": {
+            "Swurl\\": "src/"
         }
     }
 }
