@@ -96,4 +96,11 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $url->setScheme('http');
         $this->assertEquals('http://foo.com/bar/bar.jpg', $url->__toString());
     }
+
+    public function testHostWithPort()
+    {
+        $url = new \Swurl\Url('http://www.example.com:8080');
+        $this->assertTrue($url->getHost()->hasPort());
+        $this->assertEquals(8080, $url->getHost()->getPort());
+    }
 }

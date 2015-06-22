@@ -57,6 +57,9 @@ class Url
 
             if ($parts["host"]) {
                 $this->setHost(new Host($parts["host"]));
+                if ($parts["port"]) {
+                    $this->host->setPort($parts["port"]);
+                }
             }
 
             if ($parts["path"]) {
