@@ -1,7 +1,7 @@
 <?php
 namespace Swurl;
 
-class Path implements \IteratorAggregate, \Countable
+class Path implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     private $hasLeadingSlash = false;
     private $hasTrailingSlash = false;
@@ -90,4 +90,30 @@ class Path implements \IteratorAggregate, \Countable
         $output = str_replace('//', '/', $output);
         return $output;
     }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->parts[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->parts[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        if (is_numeric($offset)) {
+            $this->parts[$offset] = $value;
+        } else {
+            throw new \RuntimeException("cannot set a non-numeric path component with array access helpers");
+        }
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->parts[$offset]);
+    }
+
+
 }
