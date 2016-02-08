@@ -45,32 +45,32 @@ class Url
 
             $parts = parse_url($url);
 
-            if ($parts["scheme"]) {
+            if (isset($parts["scheme"])) {
                 $this->setScheme(new Scheme($parts["scheme"]));
             } else if (substr($url, 0, 2) === '//') {
                 $this->makeSchemeless();
             }
 
-            if ($parts["user"] || $parts["pass"]) {
+            if (isset($parts["user"]) || isset($parts["pass"])) {
                 $this->setAuthInfo(new AuthInfo($parts["user"], $parts["pass"]));
             }
 
-            if ($parts["host"]) {
+            if (isset($parts["host"])) {
                 $this->setHost(new Host($parts["host"]));
-                if ($parts["port"]) {
+                if (isset($parts["port"])) {
                     $this->host->setPort($parts["port"]);
                 }
             }
 
-            if ($parts["path"]) {
+            if (isset($parts["path"])) {
                 $this->setPath(new Path($parts["path"]));
             }
 
-            if ($parts["query"]) {
+            if (isset($parts["query"])) {
                 $this->setQuery(new Query($parts["query"]));
             }
 
-            if ($parts["fragment"]) {
+            if (isset($parts["fragment"])) {
                 $this->setFragment(new Fragment($parts["fragment"]));
             }
         }
@@ -302,7 +302,7 @@ class Url
     {
         $url = new self($_SERVER['REQUEST_URI']);
         $url->setHost($_SERVER['HTTP_HOST']);
-        if ($_SERVER['HTTPS']) {
+        if (isset($_SERVER['HTTPS'])) {
             $url->setScheme('https');
         } else {
             $url->setScheme('http');
