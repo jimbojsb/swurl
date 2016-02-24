@@ -44,7 +44,9 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
 
     public function offsetGet($offset)
     {
-        return $this->params[$offset];
+        if (isset($this->params[$offset])) {
+            return $this->params[$offset];
+        }
     }
 
     public function offsetSet($offset, $value)

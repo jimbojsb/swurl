@@ -51,4 +51,10 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($complicated, $q->__toString());
 
     }
+
+    public function testNoticeOnNonExistentKey()
+    {
+        $q = new Query();
+        $p = $q["p"];
+    }
 }
