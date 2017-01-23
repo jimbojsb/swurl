@@ -304,6 +304,8 @@ class Url
         $url->setHost($_SERVER['HTTP_HOST']);
         if (isset($_SERVER['HTTPS'])) {
             $url->setScheme('https');
+        } else if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $url->setScheme('https');
         } else {
             $url->setScheme('http');
         }
