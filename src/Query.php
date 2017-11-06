@@ -67,10 +67,10 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
             foreach ($this->params as $key => $value) {
                 if (is_array($value)) {
                     foreach ($value as $subValue) {
-                        $encodedParams[$this->encode($key)][] = $this->encode($subValue);
+                        $encodedParams[$this->encode($key, false)][] = $this->encode($subValue, false);
                     }
                 } else {
-                    $encodedParams[$this->encode($key)] = $this->encode($value);
+                    $encodedParams[$this->encode($key, false)] = $this->encode($value, false);
                 }
             }
 

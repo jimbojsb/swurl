@@ -21,9 +21,9 @@ trait Encodeable
         return false;
     }
 
-    private function encode($string)
+    private function encode($string, $checkIfEncoded = true)
     {
-        if ($this->isEncoded($string)) {
+        if ($checkIfEncoded && $this->isEncoded($string)) {
             return $string;
         }
         if ($this->encoder) {
