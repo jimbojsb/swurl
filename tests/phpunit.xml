@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
-<phpunit stopOnFailure="false" stopOnError="false">
+<phpunit bootstrap="../vendor/autoload.php" stopOnFailure="false" stopOnError="false">
     <testsuite>
         <directory suffix="Test.php">.</directory>
     </testsuite>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
 </phpunit>

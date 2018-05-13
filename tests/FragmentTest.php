@@ -1,7 +1,10 @@
 <?php
-use Swurl\Fragment;
+namespace SwUrl\Tests;
 
-class FragmentTest extends PHPUnit_Framework_TestCase
+use Swurl\Fragment;
+use PHPUnit\Framework\TestCase;
+
+class FragmentTest extends TestCase
 {
     public function testToString()
     {

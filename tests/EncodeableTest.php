@@ -1,7 +1,11 @@
 <?php
-class EncodeableTest extends PHPUnit_Framework_TestCase
+namespace SwUrl\Tests;
+
+use PHPUnit\Framework\TestCase;
+
+class EncodeableTest extends TestCase
 {
-    use Swurl\Encodeable;
+    use \Swurl\Encodeable;
 
     public function testEncode()
     {
