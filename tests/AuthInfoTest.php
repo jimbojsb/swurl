@@ -1,7 +1,10 @@
 <?php
-use Swurl\AuthInfo;
+namespace SwUrl\Tests;
 
-class AuthInfoTest extends PHPUnit_Framework_TestCase
+use Swurl\AuthInfo;
+use PHPUnit\Framework\TestCase;
+
+class AuthInfoTest extends TestCase
 {
     public function testToString()
     {

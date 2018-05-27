@@ -1,7 +1,10 @@
 <?php
-use Swurl\Path;
+namespace SwUrl\Tests;
 
-class PathTest extends PHPUnit_Framework_TestCase
+use Swurl\Path;
+use PHPUnit\Framework\TestCase;
+
+class PathTest extends TestCase
 {
     public function testToString()
     {

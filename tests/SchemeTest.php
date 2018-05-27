@@ -1,7 +1,10 @@
 <?php
-use Swurl\Scheme;
+namespace SwUrl\Tests;
 
-class SchemeTest extends PHPUnit_Framework_TestCase
+use Swurl\Scheme;
+use PHPUnit\Framework\TestCase;
+
+class SchemeTest extends TestCase
 {
     public function testSecure()
     {

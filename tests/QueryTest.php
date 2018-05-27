@@ -1,7 +1,10 @@
 <?php
-use Swurl\Query;
+namespace SwUrl\Tests;
 
-class QueryTest extends PHPUnit_Framework_TestCase
+use Swurl\Query;
+use PHPUnit\Framework\TestCase;
+
+class QueryTest extends TestCase
 {
     public function testConstruct()
     {
@@ -55,6 +58,6 @@ class QueryTest extends PHPUnit_Framework_TestCase
     public function testNoticeOnNonExistentKey()
     {
         $q = new Query();
-        $p = $q["p"];
+        $this->assertNull($q["p"]);
     }
 }

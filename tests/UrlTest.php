@@ -1,7 +1,10 @@
 <?php
-use Swurl\Url;
+namespace SwUrl\Tests;
 
-class UrlTest extends PHPUnit_Framework_TestCase
+use Swurl\Url;
+use PHPUnit\Framework\TestCase;
+
+class UrlTest extends TestCase
 {
     public function testToString()
     {

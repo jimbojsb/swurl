@@ -1,7 +1,10 @@
 <?php
-use Swurl\Host;
+namespace SwUrl\Tests;
 
-class HostTest extends PHPUnit_Framework_TestCase
+use Swurl\Host;
+use PHPUnit\Framework\TestCase;
+
+class HostTest extends TestCase
 {
     public function testToString()
     {
