@@ -4,8 +4,10 @@ namespace Swurl;
 class Query implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     private $params = [];
+    private static $useNaiveParsing = false;
 
     use Encodeable;
+
 
     public function __construct($params = null)
     {
@@ -14,7 +16,17 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                 if (substr($params, 0, 1) == '?') {
                     $params = substr($params, 1);
                 }
-                parse_str($params, $params);
+                if (self::$useNaiveParsing) {
+                    $pairs = explode("&", $params);
+                    $parsed = [];
+                    foreach ($pairs as $pair) {
+                        list($key, $val) = explode("=", $pair);
+                        $parsed[$key] = $val;
+                    }
+                    $params = $parsed;
+                } else {
+                    parse_str($params, $params);
+                }
             }
 
             if (!is_array($params)) {
@@ -25,6 +37,11 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                 $this->set($key, $value);
             }
         }
+    }
+
+    public static function useNaiveParsing($naive = true)
+    {
+        self::$useNaiveParsing = $naive;
     }
 
     public function getIterator()

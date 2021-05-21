@@ -2,7 +2,7 @@
     "name": "jimbojsb/swurl",
     "description": "URL Parser / Manipulator",
     "require-dev": {
-        "phpunit/phpunit": "^4.8|^6.5|^7.0"
+        "phpunit/phpunit": "^9.0"
     },
     "license": "MIT",
     "authors": [

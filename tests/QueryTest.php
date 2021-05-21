@@ -3,6 +3,7 @@ namespace SwUrl\Tests;
 
 use Swurl\Query;
 use PHPUnit\Framework\TestCase;
+use Swurl\Url;
 
 class QueryTest extends TestCase
 {
@@ -59,5 +60,15 @@ class QueryTest extends TestCase
     {
         $q = new Query();
         $this->assertNull($q["p"]);
+    }
+
+    public function testCorrectRebuildOfValidControlChars()
+    {
+        $testString = "https://example.com?foo.bar=baz";
+        Query::useNaiveParsing();
+        $url = new Url($testString);
+        $q = $url->getQuery();
+        $this->assertArrayHasKey("foo.bar", $q);
+        $this->assertEquals($url->__toString(), $testString);
     }
 }
