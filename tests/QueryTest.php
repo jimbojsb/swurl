@@ -91,13 +91,5 @@ class QueryTest extends TestCase
         $q = new Query($testString2);
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("", $q["foo"]);
-
-        $q = new Query($testString);
-        $this->assertArrayHasKey("foo", $q);
-        $this->assertEquals("", $q["foo"]);
-
-        $q = new Query($testString2);
-        $this->assertArrayHasKey("foo", $q);
-        $this->assertEquals("", $q["foo"]);
     }
 }
