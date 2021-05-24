@@ -4,8 +4,6 @@ namespace Swurl;
 class Query implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     private $params = [];
-    private static $useNaiveParsing = false;
-
     use Encodeable;
 
 
@@ -16,17 +14,25 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                 if (substr($params, 0, 1) == '?') {
                     $params = substr($params, 1);
                 }
-                if (self::$useNaiveParsing) {
-                    $pairs = explode("&", $params);
-                    $parsed = [];
-                    foreach ($pairs as $pair) {
-                        $exploded = explode("=", $pair);
-                        $parsed[$exploded[0]] = urldecode($exploded[1] ?? "");
-                    }
-                    $params = $parsed;
-                } else {
-                    parse_str($params, $params);
+                //manually parse to check key names for control chars later
+                $pairs = explode("&", $params);
+                $rawKeys = [];
+                foreach ($pairs as $pair) {
+                    $exploded = explode("=", $pair);
+                    $rawKeys[$exploded[0]] = true;
                 }
+                parse_str($params, $params);
+
+                // check and repair key names with periods
+                $finalParams = [];
+                foreach ($params as $key => $value) {
+                    $possibleRepairedKey = str_replace('_', '.', $key);
+                    if (isset($rawKeys[$possibleRepairedKey])) {
+                        $key = $possibleRepairedKey;
+                    }
+                    $finalParams[$key] = $value;
+                }
+                $params = $finalParams;
             }
 
             if (!is_array($params)) {
@@ -37,11 +43,6 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                 $this->set($key, $value);
             }
         }
-    }
-
-    public static function useNaiveParsing($naive = true)
-    {
-        self::$useNaiveParsing = $naive;
     }
 
     public function getIterator()

@@ -65,7 +65,6 @@ class QueryTest extends TestCase
     public function testCorrectRebuildOfValidControlChars()
     {
         $testString = "https://example.com?foo.bar=baz";
-        Query::useNaiveParsing();
         $url = new Url($testString);
         $q = $url->getQuery();
         $this->assertArrayHasKey("foo.bar", $q);
@@ -75,7 +74,6 @@ class QueryTest extends TestCase
     public function testNaiveQueryParsingEncoding()
     {
         $testString = "?foo=bar%20baz";
-        Query::useNaiveParsing();
         $q = new Query($testString);
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("bar baz", $q["foo"]);
@@ -94,7 +92,6 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("", $q["foo"]);
 
-        Query::useNaiveParsing();
         $q = new Query($testString);
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("", $q["foo"]);
