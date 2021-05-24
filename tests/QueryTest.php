@@ -71,4 +71,27 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey("foo.bar", $q);
         $this->assertEquals($url->__toString(), $testString);
     }
+
+    public function testNaiveQueryParsingEncoding()
+    {
+        $testString = "?foo=bar%20baz";
+        Query::useNaiveParsing();
+        $q = new Query($testString);
+        $this->assertArrayHasKey("foo", $q);
+        $this->assertEquals("bar baz", $q["foo"]);
+    }
+
+    public function testEmtpyQueryParamHandling()
+    {
+        $testString = "?foo=";
+
+        $q = new Query($testString);
+        $this->assertArrayHasKey("foo", $q);
+        $this->assertEquals("", $q["foo"]);
+
+        Query::useNaiveParsing();
+        $q = new Query($testString);
+        $this->assertArrayHasKey("foo", $q);
+        $this->assertEquals("", $q["foo"]);
+    }
 }

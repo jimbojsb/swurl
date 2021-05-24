@@ -21,7 +21,7 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                     $parsed = [];
                     foreach ($pairs as $pair) {
                         list($key, $val) = explode("=", $pair);
-                        $parsed[$key] = $val;
+                        $parsed[$key] = urldecode($val);
                     }
                     $params = $parsed;
                 } else {
