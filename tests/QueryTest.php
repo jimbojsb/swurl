@@ -83,14 +83,23 @@ class QueryTest extends TestCase
 
     public function testEmtpyQueryParamHandling()
     {
-        $testString = "?foo=";
+        $testString = "?foo=&bar";
+        $testString2 = "?foo&bar=";
 
         $q = new Query($testString);
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("", $q["foo"]);
 
+        $q = new Query($testString2);
+        $this->assertArrayHasKey("foo", $q);
+        $this->assertEquals("", $q["foo"]);
+
         Query::useNaiveParsing();
         $q = new Query($testString);
+        $this->assertArrayHasKey("foo", $q);
+        $this->assertEquals("", $q["foo"]);
+
+        $q = new Query($testString2);
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("", $q["foo"]);
     }

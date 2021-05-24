@@ -20,8 +20,8 @@ class Query implements \IteratorAggregate, \Countable, \ArrayAccess
                     $pairs = explode("&", $params);
                     $parsed = [];
                     foreach ($pairs as $pair) {
-                        list($key, $val) = explode("=", $pair);
-                        $parsed[$key] = urldecode($val);
+                        $exploded = explode("=", $pair);
+                        $parsed[$exploded[0]] = urldecode($exploded[1] ?? "");
                     }
                     $params = $parsed;
                 } else {
