@@ -26,6 +26,24 @@ class HostTest extends TestCase
         $this->assertTrue($h->hasSubdomain('www'));
     }
 
+    public function testDoesNotHaveSubdomain()
+    {
+        $h = new Host('www.example.com');
+        $this->assertFalse($h->hasSubdomain('link'));
+    }
+
+    public function testHasAnySubdomain()
+    {
+        $h = new Host('www.example.com');
+        $this->assertTrue($h->hasSubdomain());
+    }
+
+    public function testDoesNotHaveAnySubdomain()
+    {
+        $h = new Host('example.com');
+        $this->assertFalse($h->hasSubdomain());
+    }
+
     public function testAddSubdomain()
     {
         $h = new Host('example.com');
