@@ -91,21 +91,31 @@ class Host
 
     public function removeSubdomain($domain)
     {
+        $subdomainIndex = array_search($domain, $this->parts);
+        $this->removeSubdomainByIndex($subdomainIndex);
+    }
+
+    public function removeSubdomainByIndex($subdomainIndex)
+    {
         if ($this->isIpAddress) {
             throw new \RuntimeException("cannot do subdomain manipulation on an IP-based host");
         }
-        $subdomainIndex = array_search($domain, $this->parts);
-        if ($subdomainIndex !== false) {
+        if ($subdomainIndex !== false && array_key_exists($subdomainIndex, $this->parts) === true) {
             unset($this->parts[$subdomainIndex]);
         }
         $this->parts = array_values($this->parts);
     }
 
-    public function hasSubdomain($domain)
+    public function hasSubdomain($domain = null)
     {
         if ($this->isIpAddress) {
             return false;
         }
+
+        if ($domain === null){
+            return count($this->parts) > 2;
+        }
+
         return array_search($domain, $this->parts) !== false;
     }
 }
