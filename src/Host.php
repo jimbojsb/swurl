@@ -82,7 +82,7 @@ class Host
         if (count($this->parts) == 127) {
             throw new \RuntimeException("domain names may have at a maximum 127 components");
         }
-        if (strlen($this->__toString()) . ".$domain" > 253) {
+        if (strlen($this->__toString() . ".$domain") > 253) {
             throw new \RuntimeException("max length of domain names is 253 characters");
         }
 

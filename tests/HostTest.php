@@ -44,18 +44,38 @@ class HostTest extends TestCase
         $this->assertFalse($h->hasSubdomain());
     }
 
-    public function testAddSubdomain()
+    public function dataForTestAddSubDomains()
+    {
+        return [
+            ['www'],
+            ['70684e54'],
+            ['$%#@'],
+        ];
+    }
+
+    /**
+     * @param $domain
+     *
+     * @dataProvider dataForTestAddSubDomains
+     */
+    public function testAddSubdomain($domain)
     {
         $h = new Host('example.com');
-        $h->addSubdomain('www');
-        $this->assertTrue($h->hasSubdomain('www'));
-        $this->assertEquals('www.example.com', $h->__toString());
+        $h->addSubdomain($domain);
+        $this->assertTrue($h->hasSubdomain($domain));
+        $this->assertEquals("$domain.example.com", $h->__toString());
+    }
 
+    public function testAddSubdomainToIp()
+    {
         $h = new Host("10.0.0.1");
         try {
-            $h->removeSubdomain("foo");
+            $domain = 'www';
+            $h->addSubdomain($domain);
             $this->fail("Should have thrown runtime exception trying to modify IP hostname");
         } catch (\RuntimeException $e) {
+            $this->assertFalse($h->hasSubdomain($domain));
+            $this->assertStringContainsString('IP-based host', $e->getMessage());
         }
     }
 
