@@ -1,20 +1,15 @@
 <?php
 namespace Swurl;
 
-class Fragment
+class Fragment extends Parsable
 {
-    private $fragment;
-
-    public function __construct($fragment = null)
+    protected function getParsedSeperator(): string
     {
-        $this->fragment = str_replace("#", "", $fragment);
+        return '#';
     }
 
-    public function __toString()
+    protected function useAssignmentIfEmpty(): bool
     {
-        if ($this->fragment) {
-            return "#$this->fragment";
-        }
-        return '';
+        return false;
     }
 }
