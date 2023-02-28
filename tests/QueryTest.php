@@ -92,4 +92,13 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey("foo", $q);
         $this->assertEquals("", $q["foo"]);
     }
+
+    public function testArrayParamHandling()
+    {
+        $testString = '?foobars%5Bfoo.search%5D%5B0%5D=bar1&foobars%5Bfoo.search%5D%5B1%5D=bar2';
+
+        $q = new Query($testString);
+        $this->assertCount(2, $q['foobars']['foo.search']);
+        $this->assertStringContainsString('][', (string)$q);
+    }
 }

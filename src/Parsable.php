@@ -89,35 +89,22 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
 
     public function __toString()
     {
-        if ($this->pairs) {
-            $output = $this->getParsedSeperator();
-            $encodedParams = [];
-            foreach ($this->pairs as $key => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $subValue) {
-                        $encodedParams[$this->encode($key, false)][] = $this->encode($subValue, false);
-                    }
-                } else {
-                    $encodedParams[$this->encode($key, false)] = $this->encode($value, false);
-                }
-            }
+        return ($this->pairs ? $this->getParsedSeperator().$this->toStringPairs($this->pairs) : '');
+    }
 
-            $pairs = [];
-            foreach ($encodedParams as $key => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $subValue) {
-                        $pairs[] = "$key"."[]".($this->useAssignmentIfEmpty() && empty($subValue) ? '' : "={$subValue}");
-                    }
-                } else {
-                    $pairs[] = $key.(!empty($value) || $this->useAssignmentIfEmpty() ? "={$value}" : '');
-                }
+    function toStringPairs($pairs, $keyParent = null): string
+    {
+        $results = array();
+        foreach ($pairs as $key => $value) {
+            $keyEncoded = empty($keyParent) ? $this->encode($key) : $keyParent.'['.(is_string($key) ? $this->encode($key) : '').']';
+            if (is_scalar($value)) {
+                $results[] = $keyEncoded.($this->useAssignmentIfEmpty() || !empty($value) ? '=' : '').$this->encode($value);
+            } else {
+                $results[] = $this->toStringPairs($value, $keyEncoded);
             }
-            $output .= implode('&', $pairs);
-
-            return $output;
         }
 
-        return '';
+        return implode('&', $results);
     }
 
     public function set($key, $value)
