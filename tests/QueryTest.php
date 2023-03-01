@@ -9,6 +9,9 @@ class QueryTest extends TestCase
 {
     public function testConstruct()
     {
+        $q = new Query(["foo" => null]);
+        $this->assertEquals("?foo=", $q->__toString());
+
         $q = new Query(["foo" => "bar"]);
         $this->assertEquals("?foo=bar", $q->__toString());
 

@@ -6,6 +6,15 @@ use PHPUnit\Framework\TestCase;
 
 class FragmentTest extends TestCase
 {
+    public function testConstruct()
+    {
+        $f = new Fragment(["foo" => null]);
+        $this->assertEquals("#foo", (string) $f);
+
+        $f = new Fragment(["foo" => "bar"]);
+        $this->assertEquals("#foo=bar", (string) $f);
+    }
+
     public function testToString()
     {
         $f = new Fragment("foo");
