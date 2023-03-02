@@ -57,6 +57,10 @@ class QueryTest extends TestCase
         $q = new Query($complicated);
         $this->assertEquals($complicated, $q->__toString());
 
+        $multiencoded = '?url=http%3A%2F%2Fwww.example.com%3Furl%3Dhttp%253A%252F%252Fwww.example.com';
+        $q = new Query($multiencoded);
+        $this->assertEquals('http://www.example.com?url=http%3A%2F%2Fwww.example.com', $q['url']);
+        $this->assertEquals($multiencoded, (string) $q);
     }
 
     public function testNoticeOnNonExistentKey()
@@ -98,10 +102,9 @@ class QueryTest extends TestCase
 
     public function testArrayParamHandling()
     {
-        $testString = '?foobars%5Bfoo.search%5D%5B0%5D=bar1&foobars%5Bfoo.search%5D%5B1%5D=bar2';
-
+        $testString = '?foos[bars][]=bar1&foos[bars][]=bar2';
         $q = new Query($testString);
-        $this->assertCount(2, $q['foobars']['foo.search']);
-        $this->assertStringContainsString('][', (string)$q);
+        $this->assertCount(2, $q['foos']['bars']);
+        $this->assertEquals($testString, (string) $q);
     }
 }
