@@ -1,8 +1,9 @@
 <?php
+
 namespace SwUrl\Tests;
 
-use Swurl\Scheme;
 use PHPUnit\Framework\TestCase;
+use Swurl\Scheme;
 
 class SchemeTest extends TestCase
 {

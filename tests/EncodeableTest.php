@@ -1,4 +1,5 @@
 <?php
+
 namespace SwUrl\Tests;
 
 use PHPUnit\Framework\TestCase;

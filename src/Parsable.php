@@ -7,18 +7,19 @@ use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
+use Traversable;
 
 abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
 {
     use Encodeable;
 
-    private $pairs = [];
+    private array $pairs = [];
 
     abstract protected function getParsedSeperator(): string;
 
     abstract protected function useAssignmentIfEmpty(): bool;
 
-    public function __construct($parsable = null)
+    public function __construct(string|array $parsable = null)
     {
         if ($parsable !== null) {
             if (is_string($parsable)) {
@@ -27,8 +28,8 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
                 }
                 //manually parse to check key names for control chars later
                 $rawKeys = [];
-                foreach (explode("&", $parsable) as $pair) {
-                    $exploded = explode("=", $pair);
+                foreach (explode('&', $parsable) as $pair) {
+                    $exploded = explode('=', $pair);
                     $rawKeys[$exploded[0]] = true;
                 }
                 parse_str($parsable, $pairs);
@@ -47,7 +48,7 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
                 $pairs = $parsable;
             }
 
-            if (!is_array($pairs)) {
+            if (! is_array($pairs)) {
                 throw new InvalidArgumentException('$pairs must be an array or a query string');
             }
 
@@ -57,48 +58,48 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
         }
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->pairs);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->pairs);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->pairs[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->pairs[$offset] ?? null;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         $this->remove($offset);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return ($this->pairs ? $this->getParsedSeperator().$this->toStringPairs($this->pairs) : '');
+        return $this->pairs ? $this->getParsedSeperator().$this->toStringPairs($this->pairs) : '';
     }
 
-    function toStringPairs($pairs, $keyParent = null): string
+    public function toStringPairs($pairs, $keyParent = null): string
     {
-        $results = array();
+        $results = [];
         foreach ($pairs as $key => $value) {
             $keyEncoded = empty($keyParent) ? $this->encode($key, false) : $keyParent.'['.(is_string($key) ? $this->encode($key, false) : '').']';
             if (empty($value) || is_scalar($value)) {
-                $results[] = $keyEncoded.($this->useAssignmentIfEmpty() || !empty($value) ? '=' : '').$this->encode($value, false);
+                $results[] = $keyEncoded.($this->useAssignmentIfEmpty() || ! empty($value) ? '=' : '').$this->encode($value, false);
             } else {
                 $results[] = $this->toStringPairs($value, $keyEncoded);
             }
@@ -114,14 +115,14 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
         return $this;
     }
 
-    public function remove($key)
+    public function remove(string $key)
     {
         unset($this->pairs[$key]);
 
         return $this;
     }
 
-    public function merge($parsable)
+    public function merge(array|Parsable $parsable)
     {
         if ($parsable instanceof self) {
             $parsable = $parsable->getIterator()->getArrayCopy();

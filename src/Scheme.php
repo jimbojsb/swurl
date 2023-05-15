@@ -1,40 +1,43 @@
 <?php
+
 namespace Swurl;
 
 class Scheme
 {
     private $scheme;
 
-    public function __construct($scheme = null)
+    public function __construct(string $scheme = null)
     {
         $this->scheme = $scheme;
     }
 
-    public function setScheme($scheme)
+    public function setScheme(string $scheme)
     {
         $this->scheme = $scheme;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->scheme ?: "";
+        return $this->scheme ?: '';
     }
 
-    public function makeSecure()
+    public function makeSecure(): Scheme
     {
-        $this->scheme .= "s";
+        $this->scheme .= 's';
+
         return $this;
     }
 
-    public function makeInsecure()
+    public function makeInsecure(): Scheme
     {
         if ($this->isSecure()) {
             $this->scheme = substr($this->scheme, 0, strlen($this->scheme) - 1);
         }
+
         return $this;
     }
 
-    public function isSecure()
+    public function isSecure(): bool
     {
         return substr(strrev($this->scheme), 0, 1) == 's';
     }

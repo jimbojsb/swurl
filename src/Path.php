@@ -1,15 +1,23 @@
 <?php
+
 namespace Swurl;
 
-class Path implements \IteratorAggregate, \Countable, \ArrayAccess
-{
-    private $hasLeadingSlash = false;
-    private $hasTrailingSlash = false;
-    private $parts = [];
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
+use Traversable;
 
+class Path implements IteratorAggregate, Countable, ArrayAccess
+{
     use Encodeable;
 
-    public function __construct($path = null)
+    private bool $hasLeadingSlash = false;
+
+    private bool $hasTrailingSlash = false;
+
+    private array $parts = [];
+
+    public function __construct(string $path = null)
     {
         if ($path) {
             if (substr($path, 0, 1) == '/') {
@@ -31,55 +39,57 @@ class Path implements \IteratorAggregate, \Countable, \ArrayAccess
         $this->setEncoder('urlencode');
     }
 
-    public function setHasLeadingSlash($hasLeadingSlash)
+    public function setHasLeadingSlash(bool $hasLeadingSlash)
     {
         $this->hasLeadingSlash = $hasLeadingSlash;
+
         return $this;
     }
 
-    public function setHasTrailingSlash($hasTrailingSlash)
+    public function setHasTrailingSlash(bool $hasTrailingSlash)
     {
         $this->hasTrailingSlash = $hasTrailingSlash;
+
         return $this;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->parts);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->parts);
     }
 
-    public function appendPath($path)
+    public function appendPath(string $path)
     {
         $this->parts[] = $path;
     }
 
-    public function prependPath($path)
+    public function prependPath(string $path)
     {
         array_unshift($this->parts, $path);
     }
 
-    public function hasLeadingSlash()
+    public function hasLeadingSlash(): bool
     {
         return $this->hasLeadingSlash;
     }
 
-    public function hasTrailingSlash()
+    public function hasTrailingSlash(): bool
     {
         return $this->hasTrailingSlash;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $parts = $this->parts;
         foreach ($parts as &$part) {
             $part = $this->encode($part);
         }
-        $output = "";
+        $output = '';
         if ($this->hasLeadingSlash) {
             $output .= '/';
         }
@@ -88,32 +98,31 @@ class Path implements \IteratorAggregate, \Countable, \ArrayAccess
             $output .= '/';
         }
         $output = str_replace('//', '/', $output);
+
         return $output;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->parts[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->parts[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (is_numeric($offset)) {
             $this->parts[$offset] = $value;
         } else {
-            throw new \RuntimeException("cannot set a non-numeric path component with array access helpers");
+            throw new \RuntimeException('cannot set a non-numeric path component with array access helpers');
         }
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->parts[$offset]);
     }
-
-
 }

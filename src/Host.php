@@ -1,17 +1,20 @@
 <?php
+
 namespace Swurl;
 
 class Host
 {
-    private $parts = [];
-    private $isIpAddress = false;
-    private $port;
+    private array $parts = [];
 
-    public function __construct($hostname = null)
+    private bool $isIpAddress = false;
+
+    private int|null $port = null;
+
+    public function __construct(string $hostname = null)
     {
         if ($hostname) {
-            if (strpos($hostname, ":") !== false) {
-                list($hostname, $port) = explode(":", $hostname);
+            if (strpos($hostname, ':') !== false) {
+                [$hostname, $port] = explode(':', $hostname);
                 $this->port = $port;
             }
 
@@ -24,81 +27,84 @@ class Host
         }
     }
 
-    public function isIpAddress()
+    public function isIpAddress(): bool
     {
         return $this->isIpAddress;
     }
 
-    public function hasPort()
+    public function hasPort(): bool
     {
         return is_numeric($this->port);
     }
 
-    public function getPort()
+    public function getPort(): int|null
     {
         return $this->port;
     }
 
-    public function setPort($port = null)
+    public function setPort(int $port = null)
     {
         if (is_numeric($port) || is_null($port)) {
             $this->port = $port;
         } else {
-            throw new \InvalidArgumentException("Cannot set non-numeric port");
+            throw new \InvalidArgumentException('Cannot set non-numeric port');
         }
     }
 
-    public function isLocalHost()
+    public function isLocalHost(): bool
     {
-        $host = implode(".", $this->parts);
+        $host = implode('.', $this->parts);
         if ($host == '127.0.0.1' || $host == 'localhost') {
             return true;
         }
+
         return false;
     }
 
-    public function getTld()
+    public function getTld(): string
     {
         if ($this->isIpAddress) {
             return $this->__toString();
         }
+
         return $this->parts[count($this->parts) - 1];
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        $hostname =  implode(".", $this->parts);
+        $hostname = implode('.', $this->parts);
         if ($this->hasPort()) {
             $hostname .= ":$this->port";
         }
+
         return $hostname;
     }
 
-    public function addSubdomain($domain)
+    public function addSubdomain(string $domain)
     {
         if ($this->isIpAddress) {
-            throw new \RuntimeException("cannot do subdomain manipulation on an IP-based host");
+            throw new \RuntimeException('cannot do subdomain manipulation on an IP-based host');
         }
         if (count($this->parts) == 127) {
-            throw new \RuntimeException("domain names may have at a maximum 127 components");
+            throw new \RuntimeException('domain names may have at a maximum 127 components');
         }
-        if (strlen($this->__toString() . ".$domain") > 253) {
-            throw new \RuntimeException("max length of domain names is 253 characters");
+        if (strlen($this->__toString().".$domain") > 253) {
+            throw new \RuntimeException('max length of domain names is 253 characters');
         }
 
         array_unshift($this->parts, $domain);
     }
 
-    public function removeSubdomain($domain)
+    public function removeSubdomain(string $domain)
     {
         $subdomainIndex = array_search($domain, $this->parts);
         $this->removeSubdomainByIndex($subdomainIndex);
     }
 
-    public function removeSubdomainByIndex($subdomainIndex)
+    public function removeSubdomainByIndex(int $subdomainIndex)
     {
         if ($this->isIpAddress) {
-            throw new \RuntimeException("cannot do subdomain manipulation on an IP-based host");
+            throw new \RuntimeException('cannot do subdomain manipulation on an IP-based host');
         }
         if ($subdomainIndex !== false && array_key_exists($subdomainIndex, $this->parts) === true) {
             unset($this->parts[$subdomainIndex]);
@@ -106,13 +112,13 @@ class Host
         $this->parts = array_values($this->parts);
     }
 
-    public function hasSubdomain($domain = null)
+    public function hasSubdomain(string $domain = null): bool
     {
         if ($this->isIpAddress) {
             return false;
         }
 
-        if ($domain === null){
+        if ($domain === null) {
             return count($this->parts) > 2;
         }
 

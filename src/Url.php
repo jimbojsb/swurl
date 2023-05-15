@@ -1,92 +1,71 @@
 <?php
+
 namespace Swurl;
 
 class Url
 {
-    /**
-     * @var Fragment
-     */
-    private $fragment;
+    private Fragment|null $fragment = null;
 
-    /**
-     * @var Host
-     */
-    private $host;
+    private Host|null $host = null;
 
-    /**
-     * @var Scheme
-     */
-    private $scheme;
+    private Scheme|null $scheme = null;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query|null $query = null;
 
-    /**
-     * @var Path
-     */
-    private $path;
+    private Path|null $path = null;
 
-    /**
-     * @var AuthInfo
-     */
-    private $authInfo;
+    private AuthInfo|null $authInfo = null;
 
-    /**
-     * @param boolean $isSchemeless
-     */
-    private $isSchemeless = false;
+    private bool $isSchemeless = false;
 
-
-    public function __construct($url = null)
+    public function __construct(string $url = null)
     {
         if ($url) {
 
             $parts = parse_url($url);
 
-            if (isset($parts["scheme"])) {
-                $this->setScheme(new Scheme($parts["scheme"]));
-            } else if (substr($url, 0, 2) === '//') {
+            if (isset($parts['scheme'])) {
+                $this->setScheme(new Scheme($parts['scheme']));
+            } elseif (substr($url, 0, 2) === '//') {
                 $this->makeSchemeless();
             }
 
-            if (isset($parts["user"]) || isset($parts["pass"])) {
-                $this->setAuthInfo(new AuthInfo($parts["user"], $parts["pass"]));
+            if (isset($parts['user']) || isset($parts['pass'])) {
+                $this->setAuthInfo(new AuthInfo($parts['user'], $parts['pass']));
             }
 
-            if (isset($parts["host"])) {
-                $this->setHost(new Host($parts["host"]));
-                if (isset($parts["port"])) {
-                    $this->host->setPort($parts["port"]);
+            if (isset($parts['host'])) {
+                $this->setHost(new Host($parts['host']));
+                if (isset($parts['port'])) {
+                    $this->host->setPort($parts['port']);
                 }
             }
 
-            if (isset($parts["path"])) {
-                $this->setPath(new Path($parts["path"]));
+            if (isset($parts['path'])) {
+                $this->setPath(new Path($parts['path']));
             }
 
-            if (isset($parts["query"])) {
-                $this->setQuery(new Query($parts["query"]));
+            if (isset($parts['query'])) {
+                $this->setQuery(new Query($parts['query']));
             }
 
-            if (isset($parts["fragment"])) {
-                $this->setFragment(new Fragment($parts["fragment"]));
+            if (isset($parts['fragment'])) {
+                $this->setFragment(new Fragment($parts['fragment']));
             }
         }
     }
 
-    public function makeSchemeless()
+    public function makeSchemeless(): void
     {
         $this->isSchemeless = true;
     }
 
-    public function isSchemeless()
+    public function isSchemeless(): bool
     {
         return $this->isSchemeless;
     }
 
-    public function setPath($path)
+    public function setPath(string $path)
     {
         if (is_string($path)) {
             $path = new Path($path);
@@ -94,71 +73,70 @@ class Url
         $this->path = $path;
     }
 
-    public function setQuery($query)
+    public function setQuery(Query|string|array $query)
     {
-        if (!($query instanceof Query)) {
+        if (! ($query instanceof Query)) {
             $query = new Query($query);
         }
         $this->query = $query;
     }
 
-    public function setHost($host)
+    public function setHost(string $host)
     {
-        if (!($host instanceof Host)) {
+        if (! ($host instanceof Host)) {
             $host = new Host($host);
         }
         $this->host = $host;
     }
 
-    public function setAuthInfo($authInfo)
+    public function setAuthInfo(string|AuthInfo|array $authInfo)
     {
-        if (!($authInfo instanceof AuthInfo)) {
+        if (! ($authInfo instanceof AuthInfo)) {
             $authInfo = new AuthInfo($authInfo);
         }
         $this->authInfo = $authInfo;
     }
 
-    public function setFragment($fragment)
+    public function setFragment(string|Fragment|array $fragment)
     {
-        if (!($fragment instanceof Fragment)) {
+        if (! ($fragment instanceof Fragment)) {
             $fragment = new Fragment($fragment);
         }
         $this->fragment = $fragment;
     }
 
-    public function setScheme($scheme)
+    public function setScheme(string|Scheme $scheme)
     {
-        if (!($scheme instanceof Scheme)) {
+        if (! ($scheme instanceof Scheme)) {
             $scheme = new Scheme($scheme);
         }
         $this->scheme = $scheme;
         $this->isSchemeless = false;
     }
 
-    public function equals($url)
+    public function equals($url): bool
     {
         return $this->__toString() == "$url";
     }
 
-    public function setEncoder($encoder)
+    public function setEncoder(string $encoder)
     {
         $this->query->setEncoder($encoder);
         $this->path->setEncoder($encoder);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        $output = "";
+        $output = '';
 
         if ($this->host) {
             if ($this->isSchemeless) {
                 $output .= '//';
-            } else if ($this->scheme) {
+            } elseif ($this->scheme) {
                 $output .= $this->scheme;
-                $output .= "://";
+                $output .= '://';
             }
         }
-
 
         if ($this->authInfo) {
             $output .= $this->authInfo;
@@ -170,8 +148,8 @@ class Url
 
         if ($this->path) {
             if ($this->host) {
-                if (!$this->path->hasLeadingSlash()) {
-                    $output .= "/";
+                if (! $this->path->hasLeadingSlash()) {
+                    $output .= '/';
                 }
             }
             $output .= $this->path;
@@ -218,98 +196,101 @@ class Url
     /**
      * @return \Swurl\AuthInfo
      */
-    public function getAuthInfo()
+    public function getAuthInfo(): AuthInfo
     {
-        if (!$this->authInfo) {
+        if (! $this->authInfo) {
             $this->authInfo = new AuthInfo;
         }
+
         return $this->authInfo;
     }
 
     /**
      * @return \Swurl\Fragment
      */
-    public function getFragment()
+    public function getFragment(): Fragment
     {
-        if (!$this->fragment) {
+        if (! $this->fragment) {
             $this->fragment = new Fragment;
         }
+
         return $this->fragment;
     }
 
     /**
      * @return \Swurl\Host
      */
-    public function getHost()
+    public function getHost(): Host
     {
-        if (!$this->host) {
+        if (! $this->host) {
             $this->host = new Host;
         }
+
         return $this->host;
     }
 
     /**
      * @return \Swurl\Path
      */
-    public function getPath()
+    public function getPath(): Path
     {
-        if (!$this->path) {
+        if (! $this->path) {
             $this->path = new Path;
         }
+
         return $this->path;
     }
 
     /**
      * @return \Swurl\Query
      */
-    public function getQuery()
+    public function getQuery(): Query
     {
-        if (!$this->query) {
+        if (! $this->query) {
             $this->query = new Query;
         }
+
         return $this->query;
     }
 
     /**
      * @return \Swurl\Scheme
      */
-    public function getScheme()
+    public function getScheme(): Scheme
     {
-        if (!$this->scheme) {
+        if (! $this->scheme) {
             $this->scheme = new Scheme;
         }
+
         return $this->scheme;
     }
 
-    public function setUri($uri)
+    public function setUri(string $uri)
     {
         $parts = parse_url($uri);
-        if ($parts["path"]) {
-            $this->setPath($parts["path"]);
+        if ($parts['path']) {
+            $this->setPath($parts['path']);
         }
-        if ($parts["query"]) {
-            $this->setQuery($parts["query"]);
+        if ($parts['query']) {
+            $this->setQuery($parts['query']);
         }
-        if ($parts["fragment"]) {
-            $this->setFragment($parts["fragment"]);
+        if ($parts['fragment']) {
+            $this->setFragment($parts['fragment']);
         }
     }
 
-    /**
-     * @return Url
-     */
-    public static function current()
+    public static function current(): Url
     {
         $url = new self($_SERVER['REQUEST_URI']);
         $url->setHost($_SERVER['HTTP_HOST']);
         if (isset($_SERVER['HTTPS'])) {
             $url->setScheme('https');
-        } else if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
             $url->setScheme('https');
         } else {
             $url->setScheme('http');
         }
+
         return $url;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Swurl;
 
 class Query extends Parsable

@@ -1,32 +1,33 @@
 <?php
+
 namespace SwUrl\Tests;
 
-use Swurl\Url;
 use PHPUnit\Framework\TestCase;
+use Swurl\Url;
 
 class UrlTest extends TestCase
 {
     public function testToString()
     {
-        $u = new Url("http://www.example.com/?foo=bar#baz");
-        $this->assertEquals("http://www.example.com/?foo=bar#baz", $u->__toString());
+        $u = new Url('http://www.example.com/?foo=bar#baz');
+        $this->assertEquals('http://www.example.com/?foo=bar#baz', $u->__toString());
     }
 
     public function testEquals()
     {
-        $u = new Url("http://example.com");
-        $u2 = new Url("http://example.com");
+        $u = new Url('http://example.com');
+        $u2 = new Url('http://example.com');
         $this->assertTrue($u->equals($u2));
 
         $u2->getHost()->addSubdomain('www');
         $this->assertFalse($u->equals($u2));
 
-        $u3 = "http://example.com";
+        $u3 = 'http://example.com';
 
         $this->assertTrue($u->equals($u3));
 
         // test deep cloning
-        $u4 = new Url("http://www.example.com/foo");
+        $u4 = new Url('http://www.example.com/foo');
         $u5 = clone $u4;
         $u5->getPath()->setHasTrailingSlash(true);
         $this->assertFalse($u4->equals($u5));
@@ -51,7 +52,7 @@ class UrlTest extends TestCase
 
     public function testCurrent()
     {
-        $_SERVER['REQUEST_URI'] = "/foo/bar/baz?foo=bar&baz=foo";
+        $_SERVER['REQUEST_URI'] = '/foo/bar/baz?foo=bar&baz=foo';
         $_SERVER['HTTP_HOST'] = 'example.com';
 
         $url = Url::current();
@@ -69,7 +70,7 @@ class UrlTest extends TestCase
     {
         $url = new \Swurl\Url('test');
         $url->setHost('google.com');
-        $this->assertEquals("google.com/test", $url->__toString());
+        $this->assertEquals('google.com/test', $url->__toString());
     }
 
     public function testSchemeWithNoHost()
@@ -92,7 +93,7 @@ class UrlTest extends TestCase
         $url->setScheme('http');
         $this->assertEquals('http://example.com/foo/bar.jpg', $url->__toString());
 
-        $url = new Url("//foo.com/bar/bar.jpg");
+        $url = new Url('//foo.com/bar/bar.jpg');
         $this->assertTrue($url->isSchemeless());
         $this->assertEquals('//foo.com/bar/bar.jpg', $url->__toString());
 

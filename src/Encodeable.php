@@ -1,16 +1,17 @@
 <?php
+
 namespace Swurl;
 
 trait Encodeable
 {
     private $encoder = 'urlencode';
 
-    public function setEncoder($encoder)
+    public function setEncoder(string $encoder): void
     {
         $this->encoder = $encoder;
     }
 
-    private function isEncoded($string)
+    private function isEncoded($string): bool
     {
         if ($this->encoder) {
             $decoderFunction = str_replace('encode', 'decode', $this->encoder);
@@ -18,10 +19,11 @@ trait Encodeable
                 return true;
             }
         }
+
         return false;
     }
 
-    private function encode($string, $checkIfEncoded = true)
+    private function encode(string $string, bool $checkIfEncoded = true): string
     {
         if ($checkIfEncoded && $this->isEncoded($string)) {
             return $string;
@@ -29,6 +31,7 @@ trait Encodeable
         if ($this->encoder) {
             return call_user_func_array($this->encoder, [$string]);
         }
+
         return $string;
     }
 }

@@ -1,39 +1,44 @@
 <?php
+
 namespace Swurl;
 
 class AuthInfo
 {
     private $username;
+
     private $password;
 
     public function __construct($authInfo = null)
     {
         if (func_num_args() == 2) {
-            list($this->username, $this->password) = func_get_args();
-        } else if (is_string($authInfo)) {
-            list($this->username, $this->password) = explode(":", $authInfo);
-        } else if (is_array($authInfo)) {
-            list($this->username, $this->password) = $authInfo;
+            [$this->username, $this->password] = func_get_args();
+        } elseif (is_string($authInfo)) {
+            [$this->username, $this->password] = explode(':', $authInfo);
+        } elseif (is_array($authInfo)) {
+            [$this->username, $this->password] = $authInfo;
         }
     }
 
-    public function setUsername($username)
+    public function setUsername(string $username)
     {
         $this->username = $username;
+
         return $this;
     }
 
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
+
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->username || $this->password) {
             return "$this->username:$this->password";
         }
+
         return '';
     }
 }

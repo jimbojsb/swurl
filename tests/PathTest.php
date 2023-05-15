@@ -1,8 +1,9 @@
 <?php
+
 namespace SwUrl\Tests;
 
-use Swurl\Path;
 use PHPUnit\Framework\TestCase;
+use Swurl\Path;
 
 class PathTest extends TestCase
 {
@@ -60,20 +61,20 @@ class PathTest extends TestCase
     public function testArrayAccess()
     {
         $p = new Path('/foo/bar');
-        $this->assertEquals("foo", $p[0]);
+        $this->assertEquals('foo', $p[0]);
 
-        $p->appendPath("baz");
-        $this->assertEquals("/foo/bar/baz", $p->__toString());
+        $p->appendPath('baz');
+        $this->assertEquals('/foo/bar/baz', $p->__toString());
 
-        $p[0] = "test";
-        $this->assertEquals("/test/bar/baz", $p->__toString());
+        $p[0] = 'test';
+        $this->assertEquals('/test/bar/baz', $p->__toString());
 
         unset($p[0]);
-        $this->assertEquals("/bar/baz", $p->__toString());
+        $this->assertEquals('/bar/baz', $p->__toString());
 
         try {
-            $p["test"] = "foo";
-            $this->fail("trying to manipulate a url by array access string keys is not allowed and should throw an exception");
+            $p['test'] = 'foo';
+            $this->fail('trying to manipulate a url by array access string keys is not allowed and should throw an exception');
         } catch (\RuntimeException $e) {
         }
     }

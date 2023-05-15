@@ -1,0 +1,32 @@
+name: Run Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  run:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: [ '8.0', '8.1', '8.2' ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run PHPUnit
+        id: pest
+        run: vendor/bin/phpunit
+
+      - name: Run Pint
+        id: pint
+        run: vendor/bin/pint --test
