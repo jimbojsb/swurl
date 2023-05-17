@@ -23,7 +23,7 @@ trait Encodeable
         return false;
     }
 
-    private function encode(string $string, bool $checkIfEncoded = true): string
+    private function encode(?string $string, bool $checkIfEncoded = true): string
     {
         if ($checkIfEncoded && $this->isEncoded($string)) {
             return $string;
