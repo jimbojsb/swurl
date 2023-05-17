@@ -8,7 +8,7 @@ class Host
 
     private bool $isIpAddress = false;
 
-    private int|null $port = null;
+    private ?int $port = null;
 
     public function __construct(string $hostname = null)
     {
@@ -37,7 +37,7 @@ class Host
         return is_numeric($this->port);
     }
 
-    public function getPort(): int|null
+    public function getPort(): ?int
     {
         return $this->port;
     }

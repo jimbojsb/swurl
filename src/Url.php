@@ -4,17 +4,17 @@ namespace Swurl;
 
 class Url
 {
-    private Fragment|null $fragment = null;
+    private ?Fragment $fragment = null;
 
-    private Host|null $host = null;
+    private ?Host $host = null;
 
-    private Scheme|null $scheme = null;
+    private ?Scheme $scheme = null;
 
-    private Query|null $query = null;
+    private ?Query $query = null;
 
-    private Path|null $path = null;
+    private ?Path $path = null;
 
-    private AuthInfo|null $authInfo = null;
+    private ?AuthInfo $authInfo = null;
 
     private bool $isSchemeless = false;
 
