@@ -22,6 +22,9 @@ class AuthInfoTest extends TestCase
         $a = new AuthInfo('foo:bar');
         $this->assertEquals('foo:bar', $a->__toString());
 
+        $a = new AuthInfo('foo');
+        $this->assertEquals('foo', $a->__toString());
+
         $a = new AuthInfo(['foo', 'bar']);
         $this->assertEquals('foo:bar', $a->__toString());
 
