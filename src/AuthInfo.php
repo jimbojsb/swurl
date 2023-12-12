@@ -35,10 +35,14 @@ class AuthInfo
 
     public function __toString(): string
     {
-        if ($this->username || $this->password) {
-            return "$this->username:$this->password";
+        $result = '';
+        if (empty($this->username) === false) {
+            $result = "$this->username";
+        }
+        if (empty($this->password) === false) {
+            $result.= ":$this->password";
         }
 
-        return '';
+        return $result;
     }
 }
