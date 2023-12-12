@@ -30,8 +30,8 @@ class Url
                 $this->makeSchemeless();
             }
 
-            if (isset($parts['user']) || isset($parts['pass'])) {
-                $this->setAuthInfo(new AuthInfo($parts['user'] ?? null, $parts['pass'] ?? null));
+            if (isset($parts['user']) === true) {
+                $this->setAuthInfo(new AuthInfo($parts['user'], $parts['pass'] ?? null));
             }
 
             if (isset($parts['host'])) {
