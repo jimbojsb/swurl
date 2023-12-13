@@ -50,13 +50,8 @@ class AuthInfo
         if ($this->username === null) {
             return '';
         }
-        
-        $result = "$this->username";    
-        if ($this->password) {
-            $result.= ":$this->password";
-        }
 
-        return $result;
+        return "$this->username" . ($this->password !== null) ? ":$this->password" : '';
     }
 
    protected function valid($authItem)
