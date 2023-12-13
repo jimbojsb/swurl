@@ -22,7 +22,7 @@ class AuthInfo
         if (count($authItems) > 0) {
             $this->setUsername(array_shift($authItems));
         }
-        if (count($authItem) > 0) {
+        if (count($authItems) > 0) {
             $this->setPassword(array_shift($authItems));
         }
     }
