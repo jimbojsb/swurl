@@ -10,39 +10,57 @@ class AuthInfo
 
     public function __construct($authInfo = null)
     {
+        $authItems = [];
         if (func_num_args() == 2) {
-            [$this->username, $this->password] = func_get_args();
+            $authItems = func_get_args();
         } elseif (is_string($authInfo)) {
-            [$this->username, $this->password] = explode(':', $authInfo);
+            $authItems = explode(':', $authInfo);
         } elseif (is_array($authInfo)) {
-            [$this->username, $this->password] = $authInfo;
+            $authItems = $authInfo;
+        }
+
+        if (count($authItems) > 0) {
+            $this->setUsername(array_shift($authItems));
+        }
+        if (count($authItem) > 0) {
+            $this->setPassword(array_shift($authItems));
         }
     }
 
-    public function setUsername(string $username)
+    public function setUsername(?string $username)
     {
-        $this->username = $username;
+        if ($this->valid($username) === true) {
+            $this->username = $username;
+        }
 
         return $this;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(?string $password)
     {
-        $this->password = $password;
+        if ($this->valid($password) === true) {
+            $this->password = $password;
+        }
 
         return $this;
     }
 
     public function __toString(): string
     {
-        $result = '';
-        if (empty($this->username) === false) {
-            $result = "$this->username";
+        if ($this->username === null) {
+            return '';
         }
-        if (empty($this->password) === false) {
+        
+        $result = "$this->username";    
+        if ($this->password) {
             $result.= ":$this->password";
         }
 
         return $result;
     }
+
+   protected function valid($authItem)
+   {
+       return $authItem !== false && $authItem !== null && $authItem !== '';
+   }
 }
