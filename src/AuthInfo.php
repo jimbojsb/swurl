@@ -51,7 +51,7 @@ class AuthInfo
             return '';
         }
 
-        return "$this->username" . ($this->password !== null) ? ":$this->password" : '';
+        return "$this->username" . ($this->password !== null ? ":$this->password" : '');
     }
 
    protected function valid($authItem)
