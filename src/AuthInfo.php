@@ -18,13 +18,9 @@ class AuthInfo
         } elseif (is_array($authInfo)) {
             $authItems = $authInfo;
         }
-
-        if (count($authItems) > 0) {
-            $this->setUsername(array_shift($authItems));
-        }
-        if (count($authItems) > 0) {
-            $this->setPassword(array_shift($authItems));
-        }
+        
+        $this->setUsername(array_shift($authItems));
+        $this->setPassword(array_shift($authItems));
     }
 
     public function setUsername(?string $username)
