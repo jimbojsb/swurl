@@ -62,7 +62,7 @@ class QueryTest extends TestCase
 
     public function testNoticeOnNonExistentKey()
     {
-        $q = new Query();
+        $q = new Query;
         $this->assertNull($q['p']);
     }
 
@@ -104,5 +104,4 @@ class QueryTest extends TestCase
         $this->assertCount(2, $q['foos']['bars']);
         $this->assertEquals(str_replace(['[', ']'], ['%5B', '%5D'], $testString), (string) $q);
     }
-
 }

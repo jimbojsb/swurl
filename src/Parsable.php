@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use IteratorAggregate;
 use Traversable;
 
-abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
+abstract class Parsable implements ArrayAccess, Countable, IteratorAggregate
 {
     use Encodeable;
 
@@ -19,7 +19,7 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
 
     abstract protected function useAssignmentIfEmpty(): bool;
 
-    public function __construct(string|array $parsable = null)
+    public function __construct(string|array|null $parsable = null)
     {
         if ($parsable !== null) {
             if (is_string($parsable)) {

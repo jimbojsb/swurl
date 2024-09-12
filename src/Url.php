@@ -18,7 +18,7 @@ class Url
 
     private bool $isSchemeless = false;
 
-    public function __construct(string $url = null)
+    public function __construct(?string $url = null)
     {
         if ($url) {
 
@@ -193,9 +193,6 @@ class Url
         }
     }
 
-    /**
-     * @return \Swurl\AuthInfo
-     */
     public function getAuthInfo(): AuthInfo
     {
         if (! $this->authInfo) {
@@ -205,9 +202,6 @@ class Url
         return $this->authInfo;
     }
 
-    /**
-     * @return \Swurl\Fragment
-     */
     public function getFragment(): Fragment
     {
         if (! $this->fragment) {
@@ -217,9 +211,6 @@ class Url
         return $this->fragment;
     }
 
-    /**
-     * @return \Swurl\Host
-     */
     public function getHost(): Host
     {
         if (! $this->host) {
@@ -229,9 +220,6 @@ class Url
         return $this->host;
     }
 
-    /**
-     * @return \Swurl\Path
-     */
     public function getPath(): Path
     {
         if (! $this->path) {
@@ -241,9 +229,6 @@ class Url
         return $this->path;
     }
 
-    /**
-     * @return \Swurl\Query
-     */
     public function getQuery(): Query
     {
         if (! $this->query) {
@@ -253,9 +238,6 @@ class Url
         return $this->query;
     }
 
-    /**
-     * @return \Swurl\Scheme
-     */
     public function getScheme(): Scheme
     {
         if (! $this->scheme) {

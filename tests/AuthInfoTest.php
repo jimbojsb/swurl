@@ -9,7 +9,7 @@ class AuthInfoTest extends TestCase
 {
     public function testToString()
     {
-        $a = new AuthInfo();
+        $a = new AuthInfo;
         $a->setUsername('foo')->setPassword('bar');
         $this->assertEquals('foo:bar', $a->__toString());
 
