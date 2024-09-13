@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use IteratorAggregate;
 use Traversable;
 
-abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
+abstract class Parsable implements ArrayAccess, Countable, IteratorAggregate
 {
     use Encodeable;
 
@@ -19,7 +19,7 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
 
     abstract protected function useAssignmentIfEmpty(): bool;
 
-    public function __construct(string|array $parsable = null)
+    public function __construct(string|array|null $parsable = null)
     {
         if ($parsable !== null) {
             if (is_string($parsable)) {
@@ -97,7 +97,7 @@ abstract class Parsable implements IteratorAggregate, Countable, ArrayAccess
     {
         $results = [];
         foreach ($pairs as $key => $value) {
-            $keyEncoded = empty($keyParent) ? $this->encode($key, false) : $keyParent.'['.(is_string($key) ? $this->encode($key, false) : '').']';
+            $keyEncoded = empty($keyParent) ? $this->encode($key, false) : $keyParent.'%5B'.(is_string($key) ? $this->encode($key, false) : '').'%5D';
             if (empty($value) || is_scalar($value)) {
                 $results[] = $keyEncoded.($this->useAssignmentIfEmpty() || ! empty($value) ? '=' : '').$this->encode($value, false);
             } else {

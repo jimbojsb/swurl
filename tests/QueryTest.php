@@ -54,10 +54,6 @@ class QueryTest extends TestCase
         $q->setEncoder('rawurlencode');
         $this->assertEquals('?foo=bar%20baz', $q->__toString());
 
-        $complicated = '?focus=14&compare[]=77_14&compare[]=76_14&compare[]=12411_14&compare[]=4899_14';
-        $q = new Query($complicated);
-        $this->assertEquals($complicated, $q->__toString());
-
         $multiencoded = '?url=http%3A%2F%2Fwww.example.com%3Furl%3Dhttp%253A%252F%252Fwww.example.com';
         $q = new Query($multiencoded);
         $this->assertEquals('http://www.example.com?url=http%3A%2F%2Fwww.example.com', $q['url']);
@@ -66,7 +62,7 @@ class QueryTest extends TestCase
 
     public function testNoticeOnNonExistentKey()
     {
-        $q = new Query();
+        $q = new Query;
         $this->assertNull($q['p']);
     }
 
@@ -103,9 +99,9 @@ class QueryTest extends TestCase
 
     public function testArrayParamHandling()
     {
-        $testString = '?foos[bars][]=bar1&foos[bars][]=bar2';
+        $testString = '?foos[bars][]=bar1&foos[bars][]=bar2&foo[]=bar3';
         $q = new Query($testString);
         $this->assertCount(2, $q['foos']['bars']);
-        $this->assertEquals($testString, (string) $q);
+        $this->assertEquals(str_replace(['[', ']'], ['%5B', '%5D'], $testString), (string) $q);
     }
 }

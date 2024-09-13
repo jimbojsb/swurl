@@ -7,7 +7,7 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 
-class Path implements IteratorAggregate, Countable, ArrayAccess
+class Path implements ArrayAccess, Countable, IteratorAggregate
 {
     use Encodeable;
 
@@ -17,7 +17,7 @@ class Path implements IteratorAggregate, Countable, ArrayAccess
 
     private array $parts = [];
 
-    public function __construct(string $path = null)
+    public function __construct(?string $path = null)
     {
         if ($path) {
             if (substr($path, 0, 1) == '/') {

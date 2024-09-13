@@ -10,7 +10,7 @@ class Host
 
     private ?int $port = null;
 
-    public function __construct(string $hostname = null)
+    public function __construct(?string $hostname = null)
     {
         if ($hostname) {
             if (strpos($hostname, ':') !== false) {
@@ -42,7 +42,7 @@ class Host
         return $this->port;
     }
 
-    public function setPort(int $port = null)
+    public function setPort(?int $port = null)
     {
         if (is_numeric($port) || is_null($port)) {
             $this->port = $port;
@@ -112,7 +112,7 @@ class Host
         $this->parts = array_values($this->parts);
     }
 
-    public function hasSubdomain(string $domain = null): bool
+    public function hasSubdomain(?string $domain = null): bool
     {
         if ($this->isIpAddress) {
             return false;
