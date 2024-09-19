@@ -2,16 +2,22 @@
 
 namespace Swurl;
 
+use InvalidArgumentException;
+
 trait Encodeable
 {
     private $encoder = 'urlencode';
 
-    public function setEncoder(string $encoder): void
+    public function setEncoder(string|false|null $encoder): void
     {
-        $this->encoder = $encoder;
+        if ($encoder && ! is_callable($encoder)) {
+            throw new InvalidArgumentException('$encoder must be a callable function');
+        }
+
+        $this->encoder = $encoder ?? null;
     }
 
-    private function isEncoded($string): bool
+    private function isEncoded(?string $string): bool
     {
         if ($this->encoder) {
             $decoderFunction = str_replace('encode', 'decode', $this->encoder);
