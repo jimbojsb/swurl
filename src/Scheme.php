@@ -6,7 +6,7 @@ class Scheme
 {
     private $scheme;
 
-    public function __construct(string $scheme = null)
+    public function __construct(?string $scheme = null)
     {
         $this->scheme = $scheme;
     }
