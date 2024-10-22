@@ -21,40 +21,39 @@ abstract class Parsable implements ArrayAccess, Countable, IteratorAggregate
 
     public function __construct(string|array|null $parsable = null)
     {
-        if ($parsable !== null) {
-            if (is_string($parsable)) {
-                if (substr($parsable, 0, 1) == $this->getParsedSeperator()) {
-                    $parsable = substr($parsable, 1);
-                }
-                //manually parse to check key names for control chars later
-                $rawKeys = [];
-                foreach (explode('&', $parsable) as $pair) {
-                    $exploded = explode('=', $pair);
-                    $rawKeys[$exploded[0]] = true;
-                }
-                parse_str($parsable, $pairs);
+        if ($parsable === null) {
+            return;
+        }
 
-                // check and repair key names with periods
-                $finalParams = [];
-                foreach ($pairs as $key => $value) {
-                    $possibleRepairedKey = str_replace('_', '.', $key);
-                    if (isset($rawKeys[$possibleRepairedKey])) {
-                        $key = $possibleRepairedKey;
-                    }
-                    $finalParams[$key] = $value;
-                }
-                $pairs = $finalParams;
-            } else {
-                $pairs = $parsable;
+        if (is_string($parsable)) {
+            if (substr($parsable, 0, 1) == $this->getParsedSeperator()) {
+                $parsable = substr($parsable, 1);
             }
 
-            if (! is_array($pairs)) {
-                throw new InvalidArgumentException('$pairs must be an array or a query string');
+            // Manually parse to check key names for control chars later
+            $rawKeys = [];
+            foreach (explode('&', $parsable) as $pair) {
+                $exploded = explode('=', $pair);
+                $rawKeys[$exploded[0]] = true;
             }
+            parse_str($parsable, $pairs);
 
+            // Check and repair key names with periods
+            $finalParams = [];
             foreach ($pairs as $key => $value) {
-                $this->set($key, $value);
+                $possibleRepairedKey = str_replace('_', '.', $key);
+                if (isset($rawKeys[$possibleRepairedKey])) {
+                    $key = $possibleRepairedKey;
+                }
+                $finalParams[$key] = $value;
             }
+            $pairs = $finalParams;
+        } else {
+            $pairs = $parsable;
+        }
+
+        foreach ($pairs as $key => $value) {
+            $this->set($key, $value);
         }
     }
 
