@@ -99,6 +99,10 @@ class UrlTest extends TestCase
 
         $url->setScheme('http');
         $this->assertEquals('http://foo.com/bar/bar.jpg', $url->__toString());
+
+        $url->setScheme(null);
+        $this->assertTrue($url->isSchemeless());
+        $this->assertEquals('//foo.com/bar/bar.jpg', $url->__toString());
     }
 
     public function testHostWithPort()
@@ -106,5 +110,34 @@ class UrlTest extends TestCase
         $url = new \Swurl\Url('http://www.example.com:8080');
         $this->assertTrue($url->getHost()->hasPort());
         $this->assertEquals(8080, $url->getHost()->getPort());
+    }
+
+    public function testSameParts()
+    {
+        $url = new Url('https://www.example.com:8080/part1/part2');
+
+        $scheme = $url->getScheme();
+        $url->setScheme($scheme);
+        $this->assertSame($scheme, $url->getScheme(), 'Scheme objects are not the same');
+
+        $host = $url->getHost();
+        $url->setHost($host);
+        $this->assertSame($host, $url->getHost(), 'Host objects are not the same');
+
+        $authInfo = $url->getAuthInfo();
+        $url->setAuthInfo($authInfo);
+        $this->assertSame($authInfo, $url->getAuthInfo(), 'AuthInfo objects are not the same');
+
+        $path = $url->getPath();
+        $url->setPath($path);
+        $this->assertSame($path, $url->getPath(), 'Path objects are not the same');
+
+        $query = $url->getQuery();
+        $url->setQuery($query);
+        $this->assertSame($query, $url->getQuery(), 'Query objects are not the same');
+
+        $fragment = $url->getFragment();
+        $url->setFragment($fragment);
+        $this->assertSame($fragment, $url->getFragment(), 'Fragment objects are not the same');
     }
 }

@@ -97,7 +97,7 @@ abstract class Parsable implements ArrayAccess, Countable, IteratorAggregate
     {
         $results = [];
         foreach ($pairs as $key => $value) {
-            $keyEncoded = empty($keyParent) ? $this->encode($key, false) : $keyParent.'%5B'.(is_string($key) ? $this->encode($key, false) : '').'%5D';
+            $keyEncoded = empty($keyParent) ? $this->encode($key, false) : $keyParent.$this->encode('['.(is_string($key) ? $key : '').']', false);
             if (empty($value) || is_scalar($value)) {
                 $results[] = $keyEncoded.($this->useAssignmentIfEmpty() || ! empty($value) ? '=' : '').$this->encode($value, false);
             } else {

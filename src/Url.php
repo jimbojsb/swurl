@@ -65,53 +65,65 @@ class Url
         return $this->isSchemeless;
     }
 
-    public function setPath(string $path)
+    public function setPath(mixed $path): static
     {
-        if (is_string($path)) {
+        if (! ($path instanceof Path)) {
             $path = new Path($path);
         }
         $this->path = $path;
+
+        return $this;
     }
 
-    public function setQuery(Query|string|array $query)
+    public function setQuery(mixed $query): static
     {
         if (! ($query instanceof Query)) {
             $query = new Query($query);
         }
         $this->query = $query;
+
+        return $this;
     }
 
-    public function setHost(string $host)
+    public function setHost(mixed $host): static
     {
         if (! ($host instanceof Host)) {
             $host = new Host($host);
         }
         $this->host = $host;
+
+        return $this;
     }
 
-    public function setAuthInfo(string|AuthInfo|array $authInfo)
+    public function setAuthInfo(mixed $authInfo): static
     {
         if (! ($authInfo instanceof AuthInfo)) {
             $authInfo = new AuthInfo($authInfo);
         }
         $this->authInfo = $authInfo;
+
+        return $this;
     }
 
-    public function setFragment(string|Fragment|array $fragment)
+    public function setFragment(mixed $fragment)
     {
         if (! ($fragment instanceof Fragment)) {
             $fragment = new Fragment($fragment);
         }
         $this->fragment = $fragment;
+
+        return $this;
     }
 
-    public function setScheme(string|Scheme $scheme)
+    public function setScheme(mixed $scheme): static
     {
         if (! ($scheme instanceof Scheme)) {
             $scheme = new Scheme($scheme);
         }
         $this->scheme = $scheme;
-        $this->isSchemeless = false;
+        $this->isSchemeless = empty((string) $scheme);
+
+        return $this;
     }
 
     public function equals($url): bool
@@ -119,10 +131,12 @@ class Url
         return $this->__toString() == "$url";
     }
 
-    public function setEncoder(string $encoder)
+    public function setEncoder(string $encoder): static
     {
         $this->query->setEncoder($encoder);
         $this->path->setEncoder($encoder);
+
+        return $this;
     }
 
     public function __toString(): string
@@ -247,7 +261,7 @@ class Url
         return $this->scheme;
     }
 
-    public function setUri(string $uri)
+    public function setUri(string $uri): static
     {
         $parts = parse_url($uri);
         if ($parts['path']) {
@@ -259,6 +273,8 @@ class Url
         if ($parts['fragment']) {
             $this->setFragment($parts['fragment']);
         }
+
+        return $this;
     }
 
     public static function current(): Url
