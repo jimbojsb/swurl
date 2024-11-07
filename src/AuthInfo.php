@@ -18,7 +18,7 @@ class AuthInfo
         } elseif (is_array($authInfo)) {
             $authItems = $authInfo;
         }
-        
+
         $this->setUsername(array_shift($authItems));
         $this->setPassword(array_shift($authItems));
     }
@@ -47,11 +47,11 @@ class AuthInfo
             return '';
         }
 
-        return "$this->username" . ($this->password !== null ? ":$this->password" : '');
+        return "$this->username".($this->password !== null ? ":$this->password" : '');
     }
 
-   protected function valid($authItem)
-   {
-       return $authItem !== false && $authItem !== null && $authItem !== '';
-   }
+    protected function valid($authItem)
+    {
+        return $authItem !== false && $authItem !== null && $authItem !== '';
+    }
 }
