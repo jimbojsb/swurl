@@ -10,35 +10,48 @@ class AuthInfo
 
     public function __construct($authInfo = null)
     {
+        $authItems = [];
         if (func_num_args() == 2) {
-            [$this->username, $this->password] = func_get_args();
+            $authItems = func_get_args();
         } elseif (is_string($authInfo)) {
-            [$this->username, $this->password] = explode(':', $authInfo);
+            $authItems = explode(':', $authInfo);
         } elseif (is_array($authInfo)) {
-            [$this->username, $this->password] = $authInfo;
+            $authItems = $authInfo;
         }
+
+        $this->setUsername(array_shift($authItems));
+        $this->setPassword(array_shift($authItems));
     }
 
-    public function setUsername(string $username)
+    public function setUsername(?string $username)
     {
-        $this->username = $username;
+        if ($this->valid($username) === true) {
+            $this->username = $username;
+        }
 
         return $this;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(?string $password)
     {
-        $this->password = $password;
+        if ($this->valid($password) === true) {
+            $this->password = $password;
+        }
 
         return $this;
     }
 
     public function __toString(): string
     {
-        if ($this->username || $this->password) {
-            return "$this->username:$this->password";
+        if ($this->username === null) {
+            return '';
         }
 
-        return '';
+        return "$this->username".($this->password !== null ? ":$this->password" : '');
+    }
+
+    protected function valid($authItem)
+    {
+        return $authItem !== false && $authItem !== null && $authItem !== '';
     }
 }
